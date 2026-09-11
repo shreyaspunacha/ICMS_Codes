@@ -1,12 +1,25 @@
 ICMS Orofacial M1 Analysis
 
-Analysis code associated with a study of tongue-muscle outputs evoked by intracortical microstimulation (ICMS) of orofacial primary motor cortex under different oral sensory conditions. The title of the paper is ``Oral somatosensation shapes lingual muscle maps in macaque orofacial primary motor cortex"
+Analysis code associated with the study:
 
-The repository contains code for ICMS delivery, EMG preprocessing, stimulus-triggered averaging (StTA), waveform selection, cortical heatmap generation, and permutation-based comparison of StTA maps across conditions.
+“Oral somatosensation shapes lingual muscle maps in macaque orofacial primary motor cortex”
 
-## Repository structure
+This repository contains code for:
 
-```text
+ICMS delivery
+
+EMG preprocessing
+
+Stimulus-triggered averaging (StTA)
+
+Pulse-level waveform selection
+
+Cortical StTA heatmap generation
+
+Permutation-based comparison of StTA maps across conditions
+
+Repository structure
+
 ICMS_Codes/
 ├── README.md
 ├── .gitignore
@@ -21,7 +34,6 @@ ICMS_Codes/
 │   └── DRMS_StTAWaveform_Permutation.m
 └── hpc/
     └── run_DRMS_StTAWaveform_Permutation.sbatch
-```
 
 Experimental conditions
 
@@ -63,13 +75,13 @@ Vendor software and hardware-specific libraries are not distributed with this re
 
 1. ICMS delivery
 
-File:
+File
 
 stimulation/M1_Utah_ICMS_Stimulation.m
 
 This script configures and delivers ICMS through a CereStim stimulator.
 
-The stimulation protocol implemented in the script includes:
+Stimulation protocol
 
 96-electrode Utah array
 
@@ -91,11 +103,11 @@ Cathodal-first biphasic stimulation
 
 0.5 s inter-electrode interval
 
-Before running, update the path to the locally installed CereStim API.
+Before running the script, update the path to the locally installed CereStim API.
 
 2. EMG preprocessing and StTA analysis
 
-File:
+File
 
 preprocessing/ICMS_Analysis.m
 
@@ -115,35 +127,37 @@ Band-pass filters continuous EMG from 10–500 Hz.
 
 Full-wave rectifies the filtered EMG.
 
-Extracts EMG windows from -20 ms to +40 ms relative to the anodal-phase onset.
+Extracts EMG windows from −20 ms to +40 ms relative to anodal-phase onset.
 
 Evaluates pulse-triggered waveforms.
 
 Computes the StTA waveform and peak response magnitude in SD above baseline for each electrode and muscle.
 
-The first 14 pulses of each 15-pulse train are analyzed, giving:
+The first 14 pulses of each 15-pulse train are analyzed:
 
 34 trains × 14 pulses = 476 candidate triggers per electrode
 
-Input filenames and local NPMK paths should be updated before use.
+Before running the script, update the input filenames and local NPMK path.
 
 3. Pulse-level waveform selection
 
-File:
+File
 
 preprocessing/ICMS_Waveforms.m
 
 This script generates the pulse-level waveform dataset used by the permutation analysis.
 
-For each individual rectified pulse waveform, the pre-trigger baseline mean and SD are calculated and the maximum value in the post-trigger analysis window is evaluated.
+For each individual rectified pulse waveform, the pre-trigger baseline mean and SD are calculated, and the maximum value in the post-trigger analysis window is evaluated.
 
 The supplied script uses:
 
-stdThreshold = 0, meaning all the waveforms are retained.
+stdThreshold = 0;
+
+Therefore, all waveforms are retained.
 
 In general, a waveform is retained when:
 
-analysisPeak >= baselineMean + stdThreshold × baselineSD
+analysisPeak ≥ baselineMean + stdThreshold × baselineSD
 
 The principal output is:
 
@@ -157,7 +171,7 @@ Run this script separately for each experimental condition.
 
 4. StTA heatmaps
 
-File:
+File
 
 figures/StTA_ThreeCondition_Heatmaps.m
 
@@ -169,7 +183,7 @@ For each muscle, the same color scale is used across all three conditions so tha
 
 The script expects one gridSTA MAT file per condition.
 
-Example generic filenames:
+Example filenames
 
 Subject_Control_GridSTA.mat
 Subject_AllNB_GridSTA.mat
@@ -183,11 +197,13 @@ with one entry per physical electrode.
 
 5. Permutation-based map comparison
 
-File:
+File
 
 statistics/DRMS_StTAWaveform_Permutation.m
 
 This script compares StTA maps between two experimental conditions using permutation of selected pulse waveforms.
+
+Procedure
 
 Within each electrode and muscle:
 
@@ -203,23 +219,23 @@ Null distributions are computed for:
 
 d_rms
 
-global magnitude shift
+Global magnitude shift
 
-spatial correlation r
+Spatial correlation r
 
-The default analysis uses:
+Default permutation settings
 
 10,000 permutations
 40 parallel workers
 250 permutations per block
 
-The tests are:
+Statistical tests
 
 d_rms: right-tailed permutation test
 
-magnitude shift: two-tailed permutation test
+Magnitude shift: two-tailed permutation test
 
-spatial correlation: left-tailed permutation test
+Spatial correlation: left-tailed permutation test
 
 Permutation p-values use a +1 correction, and false-discovery-rate correction is applied across muscles.
 
@@ -260,6 +276,8 @@ scancel JOB_ID
 
 Typical analysis workflow
 
+StTA map generation
+
 ICMS delivery
     ↓
 Raw EMG + CereStim timing
@@ -270,7 +288,7 @@ gridSTA / electrode-level StTA responses
     ↓
 StTA_ThreeCondition_Heatmaps.m
 
-For waveform-level permutation statistics:
+Waveform-level permutation statistics
 
 Raw EMG + CereStim timing
     ↓
@@ -281,6 +299,8 @@ DRMS_Input.SelectedWaveforms
 DRMS_StTAWaveform_Permutation.m
     ↓
 Permutation statistics, result tables, and diagnostic figures
+
+Data availability
 
 Data can be obtained from the corresponding author upon request.
 
@@ -294,4 +314,3 @@ Default settings include:
 
 nPerm = 10000;
 randomSeed = 1;
-
