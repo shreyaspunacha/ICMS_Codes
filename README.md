@@ -144,7 +144,7 @@ The supplied script uses:
 
 stdThreshold = 0, meaning all the waveforms are retained.
 
-A waveform is retained when:
+In general, a waveform is retained when:
 
 analysisPeak >= baselineMean + stdThreshold × baselineSD
 
