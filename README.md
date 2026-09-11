@@ -1,30 +1,27 @@
 ICMS Orofacial M1 Analysis
 
-Analysis code associated with a study of tongue-muscle outputs evoked by intracortical microstimulation (ICMS) of orofacial primary motor cortex under different oral sensory conditions.
+Analysis code associated with a study of tongue-muscle outputs evoked by intracortical microstimulation (ICMS) of orofacial primary motor cortex under different oral sensory conditions. The title of the paper is ``Oral somatosensation shapes lingual muscle maps in macaque orofacial primary motor cortex"
 
 The repository contains code for ICMS delivery, EMG preprocessing, stimulus-triggered averaging (StTA), waveform selection, cortical heatmap generation, and permutation-based comparison of StTA maps across conditions.
 
-Repository structure
+## Repository structure
 
+```text
 ICMS_Codes/
 ├── README.md
 ├── .gitignore
-│
 ├── stimulation/
 │   └── M1_Utah_ICMS_Stimulation.m
-│
 ├── preprocessing/
 │   ├── ICMS_Analysis.m
 │   └── ICMS_Waveforms.m
-│
 ├── figures/
 │   └── StTA_ThreeCondition_Heatmaps.m
-│
 ├── statistics/
 │   └── DRMS_StTAWaveform_Permutation.m
-│
 └── hpc/
     └── run_DRMS_StTAWaveform_Permutation.sbatch
+```
 
 Experimental conditions
 
